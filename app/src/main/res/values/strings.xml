@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Mi Universidad</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+    <string name="AcercaUniSearch">Mi Universidad es una Aplicación que se ha pensado en la
+        ayuda de todas la Universidades Públicas, así como Privadas que desean expandir la
+        promoción de su institución.    Toda la información pública que se registre en
+        esta aplicación estará abierto a los estudiantes egresados o apunto de egresar de
+        Nivel Media Superior a partir de Enero del 2025.</string>
+
+    <string name="Bienvenida">Bienvenido a nuestra Aplicación donde le ayudaremos a dar a conocer
+        su Institución Educativa a nuestros Estudiantes de Nivel Media Superior. 100% Gratuita!!! y Confiable...</string>
+
+    <string name="imgtext">Agregue imágenes relacionados a Documentación a Solicitar,
+Fechas de Inscripciones, Inicio de Clases, o Alguna Información que quiera compartir a los estudiantes
+de Nivel Media Superior.</string>
+</resources>

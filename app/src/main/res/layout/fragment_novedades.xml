@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/border_text"
+    tools:context=".MenuDrawer.FragmentNovedades">
+
+   <androidx.appcompat.widget.LinearLayoutCompat
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical">
+
+       <ScrollView
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:padding="10dp">
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="vertical" >
+
+               <TextView
+                   android:id="@+id/TituloNovedades"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text="NOVEDADES"
+                   android:textSize="23dp"
+                   android:textStyle="bold"
+                   android:textAlignment="center"
+                   android:paddingTop="8dp"/>
+
+               <com.codesgood.views.JustifiedTextView
+                   android:id="@+id/InfoNovedades"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text=""
+                   android:paddingTop="10dp"
+                   android:textSize="19dp" />
+
+               <TextView
+                   android:id="@+id/InfoPunto1"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text=""
+                   android:paddingTop="10dp"
+                   android:textSize="16sp"
+                   android:textStyle="bold" />
+
+               <TextView
+                   android:id="@+id/InfoPunto2"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text=""
+                   android:textSize="16sp"
+                   android:textStyle="bold" />
+
+               <TextView
+                   android:id="@+id/InfoPunto3"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text=""
+                   android:textSize="16sp"
+                   android:textStyle="bold" />
+
+               <TextView
+                   android:id="@+id/InfoPunto4"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text=""
+                   android:textSize="16sp"
+                   android:textStyle="bold" />
+
+               <TextView
+                   android:id="@+id/InfoPunto5"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text=""
+                   android:textSize="16sp"
+                   android:textStyle="bold" />
+
+
+               <ImageView
+                   android:id="@+id/ImagenNovedades"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content" />
+
+               <Space
+                   android:layout_width="20dp"
+                   android:layout_height="30dp"/>
+
+               <Button
+                   android:id="@+id/btnNovedades"
+                   android:layout_width="200dp"
+                   android:layout_height="50dp"
+                   android:layout_gravity="center"
+                   android:text="Actualizar"
+                   android:visibility="gone" />
+
+           </LinearLayout>
+       </ScrollView>
+
+   </androidx.appcompat.widget.LinearLayoutCompat>
+
+</FrameLayout>

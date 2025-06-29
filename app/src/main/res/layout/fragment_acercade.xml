@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/border_text"
+    tools:context=".MenuDrawer.FragmentAcercade">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"/>
+
+       <androidx.appcompat.widget.LinearLayoutCompat
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:paddingStart="20dp"
+           android:orientation="horizontal">
+
+           <androidx.cardview.widget.CardView
+               android:layout_width="130dp"
+               android:layout_height="130dp"
+               app:cardCornerRadius="18dp">
+               <ImageView
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:src="@drawable/u"/>
+
+           </androidx.cardview.widget.CardView>
+
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:paddingStart="40dp"
+               android:textStyle="bold"
+               android:textSize="20dp"
+               android:layout_gravity="center"
+               android:text="Versión:"/>
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:paddingStart="10dp"
+               android:layout_gravity="center"
+               android:textSize="18dp"
+               android:text="1.0"/>
+       </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <com.codesgood.views.JustifiedTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/AcercaUniSearch"/>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comunidad"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:padding="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/Faceboock"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="8dp"
+                android:src="@drawable/icon_faceboock"/>
+            <ImageView
+                android:id="@+id/Instagram"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="8dp"
+                android:src="@drawable/icon_instagram"/>
+            <ImageView
+                android:id="@+id/Youtube"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:src="@drawable/youtube"/>
+
+            <ImageView
+                android:id="@+id/PlayStore"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:src="@drawable/play"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:text="Califica Nuestra App"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:layout_gravity="center"/>
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="240dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</FrameLayout>

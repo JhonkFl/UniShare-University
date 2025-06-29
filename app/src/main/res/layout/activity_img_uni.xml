@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ImgUni">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="431dp"
+        android:layout_height="202dp"
+        android:src="@drawable/a3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="139dp"
+        android:layout_height="177dp"
+        android:src="@drawable/a2"
+        android:translationX="5dp"
+        android:translationY="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="40dp"/>
+
+        <TextView
+            android:id="@+id/lblSubTituloIMG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:text="Suba Nueva Imagen para Promocionar su Institución"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="80dp"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="50dp">
+
+            <org.imaginativeworld.whynotimagecarousel.ImageCarousel
+                android:id="@+id/carousel"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_margin="5dp"
+                android:animateLayoutChanges="true"
+                app:autoPlay="true"
+                app:autoPlayDelay="3000"
+                app:carouselType="BLOCK"
+                app:imageScaleType="centerInside" />
+        </androidx.cardview.widget.CardView>
+
+
+        <com.codesgood.views.JustifiedTextView
+            android:id="@+id/lblInforma"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:text="@string/imgtext"
+            android:padding="10dp"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/ImgInstalacion"
+            android:layout_width="400dp"
+            android:layout_height="200dp"
+            android:src="@drawable/comuni"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnSubirLogo"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#23000E55"
+            android:text="Subir Logo"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            android:visibility="gone"
+            app:cornerRadius="9dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Agregar Imagen de la Instalación *Formato Horizontal*"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnSubirImg"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#23000E55"
+            android:text="Subir Imagen de la Instalación *Horizontal*"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            android:visibility="gone"
+            app:cornerRadius="9dp" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="10dp" />
+
+        <Button
+            android:id="@+id/btnSubirRequisit"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#23000E55"
+            android:text="Subir Primera Imagen"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            android:textSize="16dp"
+            app:cornerRadius="9dp" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="10dp" />
+
+        <Button
+            android:id="@+id/btnSubirInicioClass"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#23000E55"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:text="Subir Segunda Imagen"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:cornerRadius="9dp" />
+
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="20dp" />
+
+        <Button
+            android:id="@+id/btnSiguiente"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:backgroundTint="#00137C"
+            android:text="Siguiente"
+            android:textColor="@color/white"
+            app:cornerRadius="9dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

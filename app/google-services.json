@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "98178246072",
+    "project_id": "unisearch-48426",
+    "storage_bucket": "unisearch-48426.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98178246072:android:caccf93f0c5e231c9d5b4d",
+        "android_client_info": {
+          "package_name": "com.softjk.uni"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA87bkqiuYQGotUcg-Txpjam_atkkijJiU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98178246072:android:490375670da31a569d5b4d",
+        "android_client_info": {
+          "package_name": "com.softjk.unishare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA87bkqiuYQGotUcg-Txpjam_atkkijJiU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

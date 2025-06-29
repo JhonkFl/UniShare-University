@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".RecuperarPass">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:backgroundTint="#493D59"
+        app:cardCornerRadius="18dp"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:text="Recuperar Contraseña"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="232dp"
+                android:layout_height="234dp"
+                android:layout_gravity="center"
+                android:scaleX="2"
+                android:scaleY="2"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="pass2.json"
+                app:lottie_imageAssetsFolder="assets"
+                app:lottie_loop="true">
+
+            </com.airbnb.lottie.LottieAnimationView>
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="30dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lbl"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="#2196F3"
+                android:hint="Correo"
+
+                app:startIconDrawable="@drawable/correo"
+                app:startIconTint="#03A9F4">
+
+                <Space
+                    android:layout_width="20dp"
+                    android:layout_height="30dp" />
+
+                <EditText
+                    android:id="@+id/txtCorreoRecupera"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/white"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnRecuperar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enviar Correo"
+                app:cornerRadius="10dp" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autoSizeTextType="uniform"
+        android:autoText="true"
+        android:layout_margin="20dp"
+        android:text="AVISO! El link que se envie a su correo
+ de seguridad es posible que lo diriga a una pagina web externo, donde tendra que modificar su contraseña y posteriormente
+Iniciar Sesión en nuestra Aplicación.
+
+Sus Datos estan protegidos." />
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

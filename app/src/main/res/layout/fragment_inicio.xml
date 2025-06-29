@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MenuDrawer.FragmentInicio">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:translationY="-99dp">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:translationX="10dp"
+                    android:translationY="189dp"
+                    android:translationZ="2dp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="45dp">
+
+                    <ImageView
+                        android:id="@+id/logoUniInfo"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_launcher_foreground" />
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    app:cardCornerRadius="10dp">
+
+                    <ImageView
+                        android:id="@+id/ImgInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/android" />
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <RatingBar
+                        android:id="@+id/CalificaUni"
+                        android:layout_width="200dp"
+                        android:layout_height="41dp"
+                        android:layout_marginStart="100dp"
+                        android:layout_marginEnd="45dp"
+                        android:backgroundTint="#122AB1"
+                        android:isIndicator="true"
+                        android:numStars="4"
+                        android:progressTint="#FFC107"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7" />
+
+                    <ImageView
+                        android:id="@+id/IMGTutorial"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:translationX="-50dp"
+
+                        android:src="@drawable/baseline_contact_support_24"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="786dp"
+                android:orientation="vertical"
+                android:translationY="-90dp">
+
+
+                <TextView
+                    android:id="@+id/NombreUniInfo"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Cargando..."
+                    android:textAlignment="center"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="19dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Estado: "
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/EstadoInfo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="....."
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Abreviatura: "
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/AbcInfo"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text=".."
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="Tipo: "
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/TipoInfo"
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="..."
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ubicación: "
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <com.codesgood.views.JustifiedTextView
+                            android:id="@+id/UbicacionInfo"
+                            android:layout_width="238dp"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="...."
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Teléfono: "
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/TelefonoInfo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="......."
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Correo: "
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/CorreoInfo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="....."
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Facebook: "
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/FaceInfo"
+                            android:layout_width="match_parent"
+                            android:layout_height="24dp"
+                            android:paddingStart="5dp"
+                            android:text="..."
+                            android:textColor="#0534E3"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Página web: "
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/PaginaInfo"
+                            android:layout_width="match_parent"
+                            android:layout_height="24dp"
+                            android:paddingStart="5dp"
+                            android:text="..."
+                            android:textColor="#0534E3"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_margin="10dp"
+                    android:visibility="visible"
+                    app:cardCornerRadius="8dp">
+
+                    <ImageView
+                        android:id="@+id/btnCarrerasUni"
+                        android:layout_width="400dp"
+                        android:layout_height="170dp"
+                        android:gravity="center"
+                        android:src="@drawable/carrerasuni" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="157dp"
+                    android:layout_margin="10dp"
+                    android:visibility="visible"
+                    app:cardCornerRadius="8dp">
+
+                    <ImageView
+                        android:id="@+id/btnPromocion"
+                        android:layout_width="match_parent"
+                        android:layout_height="157dp"
+                        android:backgroundTint="#000620"
+                        android:gravity="center"
+                        android:src="@drawable/ppromo" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="175dp"
+                    android:layout_margin="10dp"
+                    app:cardCornerRadius="8dp">
+
+                    <ImageView
+                        android:id="@+id/btnFicha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:src="@drawable/registr" />
+                </androidx.cardview.widget.CardView>
+
+                <ImageView
+                    android:id="@+id/btnMaps"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="right"
+                    android:background="@color/float_transparent"
+                    android:src="@drawable/mapa"
+                    android:translationX="-35dp"
+                    android:translationY="-647dp" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </LinearLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/TTInfo"
+        android:layout_width="200dp"
+        android:layout_height="160dp"
+        android:visibility="gone"
+        android:src="@drawable/inf"
+        android:translationY="200dp"
+        android:translationX="100dp"/>
+
+    <ImageView
+        android:id="@+id/TTLogo"
+        android:layout_width="200dp"
+        android:layout_height="160dp"
+        android:visibility="gone"
+        android:src="@drawable/log"
+        android:translationY="140dp" />
+
+    <ImageView
+        android:id="@+id/TTMap"
+        android:layout_width="200dp"
+        android:layout_height="160dp"
+        android:src="@drawable/ubi2"
+        android:translationX="180dp"
+        android:translationY="368dp"
+        android:visibility="gone" />
+
+</FrameLayout>

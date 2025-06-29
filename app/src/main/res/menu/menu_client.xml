@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navegation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/Inicio"
+            android:title="Inicio"
+            android:icon="@drawable/casa"/>
+        <item
+            android:id="@+id/Novedades"
+            android:title="Novedades"
+            android:icon="@drawable/notifica"/>
+        <item
+            android:id="@+id/Politica"
+            android:title="Política de Privacidad"
+            android:icon="@drawable/politicprivacidad"/>
+        <item
+            android:id="@+id/Acercade"
+            android:title="Acerca de.."
+            android:icon="@drawable/botinformacion"/>
+
+        <item
+            android:id="@+id/Cerrar"
+            android:title="Cerrar Sesión"
+            android:icon="@drawable/canc"/>
+
+    </group>
+</menu>

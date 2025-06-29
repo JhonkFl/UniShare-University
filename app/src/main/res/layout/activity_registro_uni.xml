@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Regist.RegistroUni"
+    android:background="@drawable/border_text"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/lblTituloRe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:padding="8dp"
+                    android:text="Ok!! Registremos su Institución.."
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="22dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:src="@drawable/sm" />
+
+                <ImageView
+                    android:id="@+id/EditarUbic"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="end"
+                    android:src="@drawable/mapa"
+                    android:translationX="-20dp"
+                    android:translationY="-50dp"
+                    android:visibility="invisible" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:drawable/dialog_holo_light_frame"
+                    android:orientation="vertical"
+                    android:padding="18dp"
+                    android:translationY="-20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Datos Públicos de la Institución"
+                        android:textStyle="bold" />
+
+
+                    <Spinner
+                        android:id="@+id/Estado"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp" />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/lblABC"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="57dp"
+                            android:hint="Abreviatura"
+                            app:startIconDrawable="@drawable/abc"
+                            app:startIconTint="#0621B8">
+
+                            <EditText
+                                android:id="@+id/txtABC"
+                                android:layout_width="158dp"
+                                android:layout_height="wrap_content"
+                                android:inputType="text|textCapCharacters"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <Space
+                            android:layout_width="22dp"
+                            android:layout_height="wrap_content" />
+
+                        <Spinner
+                            android:id="@+id/Tipo"
+                            android:layout_width="171dp"
+                            android:layout_height="57dp" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="57dp"
+                        android:hint="Nombre de la Institución"
+                        app:startIconDrawable="@drawable/edificio"
+                        app:startIconTint="#0621B8">
+
+                        <EditText
+                            android:id="@+id/txtNombre"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text|textPersonName|textAutoComplete|textAutoCorrect|textCapWords" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="57dp"
+                        android:hint="Dirección: Calle"
+                        app:startIconDrawable="@drawable/ubicacio"
+                        app:startIconTint="#0621B8">
+
+                        <EditText
+                            android:id="@+id/txtUbicacion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text|textPersonName|textAutoComplete|textAutoCorrect|textCapWords" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Spinner
+                        android:id="@+id/SpMunicipio"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/lblLocalidad"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="57dp"
+                        android:hint="Localidad o Colonia"
+                        app:startIconDrawable="@drawable/localidad"
+                        app:startIconTint="#0621B8">
+
+                        <EditText
+                            android:id="@+id/txtLocalidad"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text|textPersonName|textAutoComplete|textAutoCorrect|textCapWords" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:drawable/dialog_holo_light_frame"
+                    android:orientation="vertical"
+                    android:padding="15dp"
+                    android:translationY="-10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Contactos Públicos de la Institución"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="57dp"
+                        android:hint="Teléfono"
+                        app:startIconDrawable="@android:drawable/ic_menu_call"
+                        app:startIconTint="#0621B8">
+
+                        <EditText
+                            android:id="@+id/txtTelefono"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="phone" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="57dp"
+                        android:hint="Correo"
+                        app:startIconDrawable="@drawable/correo"
+                        app:startIconTint="#0621B8">
+
+                        <EditText
+                            android:id="@+id/txtCorreo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textEmailAddress" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="57dp"
+                        android:hint="Link de Facebook"
+                        app:startIconDrawable="@drawable/facebook"
+                        app:startIconTint="#0621B8">
+
+                        <EditText
+                            android:id="@+id/txtFacebook"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textUri" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="57dp"
+                        android:hint="Link de su Pagina Web"
+                        app:startIconDrawable="@drawable/red"
+                        app:startIconTint="#0621B8">
+
+                        <EditText
+                            android:id="@+id/txtPagina"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textUri" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/linerSesion2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:drawable/dialog_holo_light_frame"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Datos Para Iniciar Sesión" />
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/lblEmailUser"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        app:startIconDrawable="@drawable/correo"
+                        app:startIconTint="#0621B8">
+
+                        <EditText
+                            android:id="@+id/EmailUser"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Correo"
+                            android:inputType="textEmailAddress" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/lblPass"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        app:passwordToggleEnabled="true"
+                        app:passwordToggleTint="#3F51B5"
+                        app:startIconDrawable="@drawable/candado"
+                        app:startIconTint="#0621B8">
+
+                        <EditText
+                            android:id="@+id/Password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Contraseña"
+                            android:inputType="textPassword" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="10dp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/linerPolitica"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:orientation="vertical"
+                android:padding="15dp">
+                <TextView
+                    android:id="@+id/LblPolitica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Politica de Privacidad"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/btnAcepto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Acepto"/>
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="16sp"
+                    android:autoLink="web"
+                    android:text="https://unisearchjk.blogspot.com/p/politica-de-privacidad-mi-universidad.html" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/LinerCodigo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:paddingRight="8dp"
+                        app:startIconDrawable="@drawable/carr"
+                        app:startIconTint="#0621B8">
+
+                        <EditText
+                            android:id="@+id/Codigo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Código de Invitación"
+                            android:inputType="textCapWords" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <Button
+                        android:id="@+id/btnCodigo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/float_transparent"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:text="Solicitar Código"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="9dp"/>
+
+                <Button
+                    android:id="@+id/GuardarCarrSec"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:enabled="false"
+                    android:text="Guardar"
+                    app:cornerRadius="9dp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
