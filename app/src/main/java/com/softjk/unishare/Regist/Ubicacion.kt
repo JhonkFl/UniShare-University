@@ -1,274 +1,248 @@
-package com.softjk.unishare.Regist;
+package com.softjk.unishare.Regist
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.Manifest
+import android.app.ProgressDialog
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.LocationListener
+import android.location.LocationManager
+import android.os.Bundle
+import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.softjk.unishare.ImgUni
+import com.softjk.unishare.Metodos.Permisos
+import com.softjk.unishare.R
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+class Ubicacion : AppCompatActivity(), OnMapReadyCallback, OnMapClickListener {
+    lateinit var Guardar: Button
+    lateinit var mAuth: FirebaseAuth
+    lateinit var CentrarUbicacion: ImageButton
+    lateinit var Latitud: EditText
+    lateinit var Longitud: EditText
+    lateinit var mMap: GoogleMap
+    lateinit var mfirestore: FirebaseFirestore
+    lateinit var progressDialog: ProgressDialog
 
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.softjk.unishare.ImgUni;
-import com.softjk.unishare.MenuDrawer.MenuPrincipal;
-import com.softjk.unishare.Metodos.Permisos;
-import com.softjk.unishare.R;
-
-import java.util.HashMap;
-import java.util.Map;
-
-public class Ubicacion extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
-    Button Guardar;
-    FirebaseAuth mAuth;
-    ImageButton CentrarUbicacion;
-    EditText Latitud,Longitud;
-    GoogleMap mMap;
-    FirebaseFirestore mfirestore;
-    ProgressDialog progressDialog;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_ubicacion);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        Latitud = findViewById(R.id.txtLatitud);
-        Longitud = findViewById(R.id.txtLongitud);
-        Guardar = findViewById(R.id.btnUbicacion);
-        CentrarUbicacion = findViewById(R.id.imgCentrarUbic);
-        progressDialog = new ProgressDialog(this);
-        mfirestore = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-
-        SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.LinerMapaSelec);
-        assert supportMapFragment != null;
-        supportMapFragment.getMapAsync((OnMapReadyCallback) this);
-
-        SharedPreferences preferences = this.getSharedPreferences("id", Context.MODE_PRIVATE);
-        String idEsta = preferences.getString("Estado","");
-        String idUni = mAuth.getCurrentUser().getUid();
-       // String idUni = "IA9iP31DWGTNIHbWLMWlNbFQ3J03";
-        String idActualizar = getIntent().getStringExtra("Actualizar");
-        System.out.println(idEsta+idUni);
-        if (idActualizar != null){
-            ObtenerDatos(idEsta,idUni);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        this.enableEdgeToEdge()
+        setContentView(R.layout.activity_ubicacion)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) {
+            v: View, insets: WindowInsetsCompat ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
 
-        Permisos.getLocalizacion(Ubicacion.this);
+        Latitud = findViewById(R.id.txtLatitud)
+        Longitud = findViewById(R.id.txtLongitud)
+        Guardar = findViewById(R.id.btnUbicacion)
+        CentrarUbicacion = findViewById(R.id.imgCentrarUbic)
+        progressDialog = ProgressDialog(this)
+        mfirestore = FirebaseFirestore.getInstance()
+        mAuth = FirebaseAuth.getInstance()
+
+        val supportMapFragment =
+            checkNotNull(supportFragmentManager.findFragmentById(R.id.LinerMapaSelec) as SupportMapFragment?)
+        supportMapFragment.getMapAsync(this as OnMapReadyCallback)
+
+        val preferences = this.getSharedPreferences("id", MODE_PRIVATE)
+        val idEsta = preferences.getString("Estado", "")!!
+        val idUni = mAuth.currentUser?.uid
+        // String idUni = "IA9iP31DWGTNIHbWLMWlNbFQ3J03";
+        val idActualizar = intent.getStringExtra("Actualizar")
+        println(idEsta + idUni)
+        if (idActualizar != null) {
+            if (idUni != null) {
+                ObtenerDatos(idEsta, idUni)
+            }else{
+                Toast.makeText(this, "Error al Obtener id", Toast.LENGTH_SHORT)
+            }
+        }
+
+        Permisos.getLocalizacion(this@Ubicacion)
 
 
-        Guardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String Lat = Latitud.getText().toString().trim();
-                String Lon = Longitud.getText().toString().trim();
-                if (Lat.isEmpty() && Lon.isEmpty()){
-                    Toast.makeText(getApplicationContext(), "Seleccione su Ubicación", Toast.LENGTH_SHORT).show();
-                }else {
-                    GuardarDatos( Lat, Lon,idEsta,idUni);
+        Guardar.setOnClickListener(View.OnClickListener {
+            val Lat = Latitud.text.toString().trim()
+            val Lon = Longitud.text.toString().trim()
+            if (Lat.isEmpty() && Lon.isEmpty()) {
+                Toast.makeText(applicationContext, "Seleccione su Ubicación", Toast.LENGTH_SHORT).show()
+            } else {
+                if (idUni != null) {
+                    GuardarDatos(Lat, Lon, idEsta, idUni)
+                }else{
+                    Toast.makeText(this,"Error al obtener el Id", Toast.LENGTH_SHORT)
                 }
             }
-        });
+        })
 
-        CentrarUbicacion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UbicacionPrecisa();
-            }
-        });
-
+        CentrarUbicacion.setOnClickListener(View.OnClickListener { UbicacionPrecisa() })
     }
 
-    private void GuardarDatos(String Lat, String Lon,String idEstado, String idUni) {
-        progressDialog.setMessage("Guardando Ubicación...");
-        progressDialog.show();
-        progressDialog.setCancelable(false);
+    private fun GuardarDatos(Lat: String, Lon: String, idEstado: String, idUni: String) {
+        progressDialog.setMessage("Guardando Ubicación...")
+        progressDialog.show()
+        progressDialog.setCancelable(false)
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("Latitud", Lat);
-        map.put("Longitud", Lon);
-        mfirestore.collection(idEstado).document(idUni).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                progressDialog.dismiss();
-                String msg="Ubicación Guardada";
-                toastCorrecto(msg);
-                Intent intent = new Intent(Ubicacion.this, ImgUni.class);
-                intent.putExtra("Dato","Uni");
-                startActivity(intent);
-                finish();
-                finish();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressDialog.dismiss();
-                String msg="Error al Guardar los Datos";
-                toastIncorrecto(msg);
-            }
-        });
+        val map: MutableMap<String, Any> = HashMap()
+        map["Latitud"] = Lat
+        map["Longitud"] = Lon
+        mfirestore.collection(idEstado).document(idUni).update(map).addOnSuccessListener(
+            OnSuccessListener<Void?> {
+                progressDialog.dismiss()
+                val msg = "Ubicación Guardada"
+                toastCorrecto(msg)
+                val intent = Intent(this@Ubicacion, ImgUni::class.java)
+                intent.putExtra("Dato", "Uni")
+                startActivity(intent)
+                finish()
+            }).addOnFailureListener {
+            progressDialog.dismiss()
+            val msg = "Error al Guardar los Datos"
+            toastIncorrecto(msg)
+        }
     }
 
-    private void toastIncorrecto(String msg) {
-        LayoutInflater layoutInflater = getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.custom_toast_error, (ViewGroup) findViewById(R.id.ll_custom_toast_error));
-        TextView txtMensaje = view.findViewById(R.id.txtMensajeToast2);
-        txtMensaje.setText(msg);
 
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.BOTTOM, 0, 300);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(view);
-        toast.show();
-    }
+    private fun ObtenerDatos(idEstado: String, idUni: String) {
+        mfirestore.collection(idEstado).document(idUni).get().addOnSuccessListener(
+            OnSuccessListener { documentSnapshot ->
+                val Latit = documentSnapshot.getString("Latitud")
+                val Longt = documentSnapshot.getString("Longitud")
+                val ABc = documentSnapshot.getString("ABC")
 
-    private void toastCorrecto(String msg) {
-        LayoutInflater layoutInflater = getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.custom_toast_ok, (ViewGroup) findViewById(R.id.ll_custom_toast_ok));
-        TextView txtMensaje = view.findViewById(R.id.txtMensajeToast1);
-        txtMensaje.setText(msg);
-
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.BOTTOM, 0, 200);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(view);
-        toast.show();
-    }
-
-    private void ObtenerDatos(String idEstado, String idUni){
-        mfirestore.collection(idEstado).document(idUni).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-                String Latit = documentSnapshot.getString("Latitud");
-                String Longt = documentSnapshot.getString("Longitud");
-                String ABc = documentSnapshot.getString("ABC");
-
-                Double Lat = Double.valueOf(Latit);
-                Double Lon = Double.valueOf(Longt);
-                SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.LinerMapaSelec);
-                assert supportMapFragment != null;
-                supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-                    @Override
-                    public void onMapReady(@NonNull GoogleMap googleMap) {
-                        mMap = googleMap;
-                        LatLng centroDelMapa = new LatLng(Lat, Lon);
-                        // posición y zoom definidos
-                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(centroDelMapa, 14);
-                        mMap.addMarker(new MarkerOptions().position(centroDelMapa).title(ABc));
-                        //mMap.moveCamera(CameraUpdateFactory.newLatLng(cameraUpdate));
-                        mMap.moveCamera(cameraUpdate);
-
-                        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                            @Override
-                            public void onMapClick(@NonNull LatLng latLng) {
-                                Latitud.setText(""+latLng.latitude);
-                                Longitud.setText(""+latLng.longitude);
-                                mMap.clear();
-                                LatLng mexico = new LatLng(latLng.latitude, latLng.longitude);
-                                mMap.addMarker(new MarkerOptions().position(mexico).title(""));
-                                mMap.moveCamera(CameraUpdateFactory.newLatLng(mexico));
-                            }
-                        });
+                val Lat = Latit!!.toDouble()
+                val Lon = Longt!!.toDouble()
+                val supportMapFragment = checkNotNull(
+                    supportFragmentManager.findFragmentById(R.id.LinerMapaSelec) as SupportMapFragment?)
+                supportMapFragment.getMapAsync { googleMap ->
+                    mMap = googleMap
+                    val centroDelMapa = LatLng(Lat, Lon)
+                    val cameraUpdate = CameraUpdateFactory.newLatLngZoom(centroDelMapa, 14f)  // posición y zoom definidos
+                    mMap.addMarker(MarkerOptions().position(centroDelMapa).title(ABc))
+                    //mMap.moveCamera(CameraUpdateFactory.newLatLng(cameraUpdate));
+                    mMap.moveCamera(cameraUpdate)
+                    mMap.setOnMapClickListener { latLng ->
+                        Latitud.setText("" + latLng.latitude)
+                        Longitud.setText("" + latLng.longitude)
+                        mMap.clear()
+                        val mexico = LatLng(
+                            latLng.latitude,
+                            latLng.longitude
+                        )
+                        mMap.addMarker(MarkerOptions().position(mexico).title(""))
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(mexico))
                     }
-                });
                 }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Ubicacion.this, "Error al Obtener los Datos", Toast.LENGTH_SHORT).show();
-            }
-        });
+            }).addOnFailureListener {
+            Toast.makeText(this@Ubicacion, "Error al Obtener los Datos", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-
-        String idActualizar = getIntent().getStringExtra("Actualizar");
+    override fun onMapReady(googleMap: GoogleMap) {
+        val idActualizar = intent.getStringExtra("Actualizar")
         if (idActualizar == null) {
-            mMap = googleMap;
-            mMap.setOnMapClickListener(this);
-            LatLng mexico = new LatLng(22.25843382768379, -101.81628865562087);
-            mMap.addMarker(new MarkerOptions().position(mexico).title("Mi Universidad"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(mexico));
+            mMap = googleMap
+            mMap.setOnMapClickListener(this)
+            val mexico = LatLng(22.25843382768379, -101.81628865562087)
+            mMap.addMarker(MarkerOptions().position(mexico).title("Mi Universidad"))
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(mexico))
         }
     }
 
-    @Override
-    public void onMapClick(@NonNull LatLng latLng) {
-        Latitud.setText(""+latLng.latitude);
-        Longitud.setText(""+latLng.longitude);
-        mMap.clear();
-        LatLng mexico = new LatLng(latLng.latitude, latLng.longitude);
-        mMap.addMarker(new MarkerOptions().position(mexico).title(""));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(mexico));
+    override fun onMapClick(latLng: LatLng) {
+        Latitud.setText("" + latLng.latitude)
+        Longitud.setText("" + latLng.longitude)
+        mMap.clear()
+        val mexico = LatLng(latLng.latitude, latLng.longitude)
+        mMap.addMarker(MarkerOptions().position(mexico).title(""))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(mexico))
     }
 
 
-    public void UbicacionPrecisa() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+    fun UbicacionPrecisa() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
         }
-        mMap.setMyLocationEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        mMap!!.isMyLocationEnabled = true
+        mMap!!.uiSettings.isMyLocationButtonEnabled = false
 
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        LocationListener locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(@NonNull Location location) {
-                LatLng miUbicacion = new LatLng(location.getLatitude(), location.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(miUbicacion).title("Mi Ubicación"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(miUbicacion));
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(miUbicacion)
-                        .zoom(14)
-                        .bearing(90)
-                        .tilt(45)
-                        .build();
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        val locationManager =
+            getSystemService(LOCATION_SERVICE) as LocationManager
+        val locationListener = LocationListener { location ->
+            val miUbicacion =
+                LatLng(location.latitude, location.longitude)
+            mMap!!.addMarker(MarkerOptions().position(miUbicacion).title("Mi Ubicación"))
+            mMap!!.moveCamera(CameraUpdateFactory.newLatLng(miUbicacion))
+            val cameraPosition = CameraPosition.Builder()
+                .target(miUbicacion)
+                .zoom(14f)
+                .bearing(90f)
+                .tilt(45f)
+                .build()
+            mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
 
-                Latitud.setText(""+location.getLatitude());
-                Longitud.setText(""+location.getLongitude());
-            }
-        };
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,locationListener);
+            Latitud!!.setText("" + location.latitude)
+            Longitud!!.setText("" + location.longitude)
+        }
+        locationManager.requestLocationUpdates(
+            LocationManager.NETWORK_PROVIDER,
+            0,
+            0f,
+            locationListener
+        )
+    }
+
+    fun toastCorrecto(msg: String?) {
+        val view = layoutInflater.inflate(R.layout.custom_toast_ok, null)
+        val txtMensaje = view.findViewById<TextView>(R.id.txtMensajeToast1)
+        txtMensaje.text = msg
+
+        val toast = Toast(applicationContext)
+        toast.setGravity(Gravity.CENTER_VERTICAL or Gravity.BOTTOM, 0, 200)
+        toast.duration = Toast.LENGTH_LONG
+        toast.view = view
+        toast.show()
+    }
+
+    fun toastIncorrecto(msg: String?) {
+        val view = layoutInflater.inflate(R.layout.custom_toast_error, null)
+        val txtMensaje = view.findViewById<TextView>(R.id.txtMensajeToast2)
+        txtMensaje.text = msg
+
+        val toast = Toast(applicationContext)
+        toast.setGravity(Gravity.CENTER_VERTICAL or Gravity.BOTTOM, 0, 300)
+        toast.duration = Toast.LENGTH_LONG
+        toast.view = view
+        toast.show()
     }
 }

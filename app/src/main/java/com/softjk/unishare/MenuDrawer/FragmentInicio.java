@@ -280,11 +280,14 @@ public class FragmentInicio extends Fragment {
                 Faceboock.setText(FaceboockUni);
                 Pagina.setText(PaginaUni);
 
-                SharedPreferences preferences = getActivity().getSharedPreferences("id", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("Nombre", NombreUni);
-                editor.putString("Logo", LogoUni);
-                editor.commit();
+                if (getActivity() != null) {
+                    SharedPreferences preferences = getActivity().getSharedPreferences("id", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("Nombre", NombreUni);
+                    editor.putString("Logo", LogoUni);
+                    editor.commit();
+                }
+
 
                 if (Calificacion != null){
                     Float Calif = Float.valueOf(Calificacion);

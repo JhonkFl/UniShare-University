@@ -1,451 +1,408 @@
-package com.softjk.unishare.Regist;
+package com.softjk.unishare.Regist
 
-import static com.google.firebase.messaging.Constants.MessageNotificationKeys.TAG;
+import android.app.ProgressDialog
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import android.text.TextUtils
+import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.CompoundButton
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.RadioButton
+import android.widget.Spinner
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.softjk.unishare.MenuDrawer.MenuPrincipal
+import com.softjk.unishare.Metodos.SPMunicipios
+import com.softjk.unishare.R
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+class RegistroUni : AppCompatActivity() {
+    val mfirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    lateinit var progressDialog: ProgressDialog
+    lateinit var Titulo: TextView
+    lateinit var ABC: EditText
+    lateinit var Nombre: EditText
+    lateinit var txtUbicacion: EditText
+    lateinit var Localidad: EditText
+    lateinit var Telefono: EditText
+    lateinit var Correo: EditText
+    lateinit var Facebook: EditText
+    lateinit var Pagina: EditText
+    lateinit var txtCodigo: EditText
+    lateinit var Email: EditText
+    lateinit var Pass: EditText
+    lateinit var Tipo: Spinner
+    lateinit var Estado: Spinner
+    lateinit var Municipio: Spinner
+    lateinit var lblMunicipio: TextInputLayout
+    lateinit var lblABC: TextInputLayout
+    lateinit var sesion: LinearLayoutCompat
+    lateinit var Politica: LinearLayoutCompat
+    lateinit var Acepto: RadioButton
+    lateinit var IMGUbicac: ImageView
+    lateinit var Guardar: Button
+    lateinit var btnCodigo: Button
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.RecyclerView;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        this.enableEdgeToEdge()
+        setContentView(R.layout.activity_registro_uni)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) {
+            v: View, insets: WindowInsetsCompat ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.softjk.unishare.ImgUni;
-import com.softjk.unishare.Login;
-import com.softjk.unishare.MenuDrawer.MenuPrincipal;
-import com.softjk.unishare.Metodos.SPMunicipios;
-import com.softjk.unishare.R;
-import com.softjk.unishare.fragment_maps;
+        progressDialog = ProgressDialog(this)
+        ABC = findViewById(R.id.txtABC)
+        Nombre = findViewById(R.id.txtNombre)
+        Municipio = findViewById(R.id.SpMunicipio)
+        txtUbicacion = findViewById(R.id.txtUbicacion)
+        Localidad = findViewById(R.id.txtLocalidad)
+        Telefono = findViewById(R.id.txtTelefono)
+        Facebook = findViewById(R.id.txtFacebook)
+        IMGUbicac = findViewById(R.id.EditarUbic)
+        Pagina = findViewById(R.id.txtPagina)
+        Guardar = findViewById(R.id.GuardarCarrSec)
+        Tipo = findViewById(R.id.Tipo)
+        Estado = findViewById(R.id.Estado)
 
-import java.util.HashMap;
-import java.util.Map;
+        Correo = findViewById(R.id.txtCorreo)
+        Email = findViewById(R.id.EmailUser)
+        Pass = findViewById(R.id.Password)
+        lblMunicipio = findViewById(R.id.lblLocalidad)
+        lblABC = findViewById(R.id.lblABC)
+        Acepto = findViewById(R.id.btnAcepto)
+        sesion = findViewById(R.id.linerSesion2)
 
-public class RegistroUni extends AppCompatActivity {
-    FirebaseFirestore mfirestore;
-    ProgressDialog progressDialog;
-    TextView Titulo;
-    EditText ABC,Nombre, txtUbicacion,Localidad, Telefono, Correo, Facebook,Pagina,txtCodigo,Email,Pass;
-    Spinner Tipo, Estado,Municipio;
-    TextInputLayout lblMunicipio,lblABC;
-    LinearLayoutCompat sesion,Politica,LinCodigo;
-    RadioButton Acepto;
+        btnCodigo = findViewById(R.id.btnCodigo)
+        Politica = findViewById(R.id.linerPolitica)
+        Titulo = findViewById(R.id.lblTituloRe)
+        txtCodigo = findViewById(R.id.Codigo)
 
-    ImageView IMGUbicac;
-    Button Guardar, btnCodigo;
-    FirebaseAuth mAuth;
-    RecyclerView ListaCarr;
-    Query query;
-    static String Codigo;
+        val idActualizar = intent.getStringExtra("Actualizar")
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_registro_uni);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        if (idActualizar != null) {
+            IMGUbicac.setVisibility(View.VISIBLE)
+            sesion.setVisibility(View.GONE)
+            Politica.setVisibility(View.GONE)
+            Guardar.setEnabled(true)
+            val preferences = this.getSharedPreferences("id", MODE_PRIVATE)
+            val idEsta = preferences.getString("Estado", "")!!
+            val idUni = mAuth.currentUser?.uid
 
-        progressDialog = new ProgressDialog(this);
-        ABC = findViewById(R.id.txtABC);
-        Nombre = findViewById(R.id.txtNombre);
-        Municipio = findViewById(R.id.SpMunicipio);
-        txtUbicacion = findViewById(R.id.txtUbicacion);
-        Localidad = findViewById(R.id.txtLocalidad);
-        Telefono = findViewById(R.id.txtTelefono);
-        Facebook = findViewById(R.id.txtFacebook);
-        IMGUbicac = findViewById(R.id.EditarUbic);
-        Pagina = findViewById(R.id.txtPagina);
-        Guardar = findViewById(R.id.GuardarCarrSec);
-        Tipo = findViewById(R.id.Tipo);
-        Estado = findViewById(R.id.Estado);
-        mfirestore = FirebaseFirestore.getInstance();
+            if (idUni != null) {
+                ObtenerDatos(idUni, idEsta)
+            } else {
+                Toast.makeText(applicationContext, "Error al Obtener lo Datos", Toast.LENGTH_SHORT).show()
+            }
 
-        Correo = findViewById(R.id.txtCorreo);
-        Email = findViewById(R.id.EmailUser);
-        Pass = findViewById(R.id.Password);
-        lblMunicipio = findViewById(R.id.lblLocalidad);
-        lblABC = findViewById(R.id.lblABC);
-        Acepto = findViewById(R.id.btnAcepto);
-        sesion = findViewById(R.id.linerSesion2);
-       // lblPass = findViewById(R.id.lblPass);
-        btnCodigo = findViewById(R.id.btnCodigo);
-        Politica = findViewById(R.id.linerPolitica);
-        Titulo = findViewById(R.id.lblTituloRe);
-        txtCodigo = findViewById(R.id.Codigo);
-        mAuth = FirebaseAuth.getInstance();
-        String idActualizar = getIntent().getStringExtra("Actualizar");
+            Guardar.setText("Actualizar")
+            Titulo.setText("Ok vamos Actualizar los Datos de su Institución")
 
-        if (idActualizar != null){
-            IMGUbicac.setVisibility(View.VISIBLE);
-            sesion.setVisibility(View.GONE);
-            Politica.setVisibility(View.GONE);
-            Guardar.setEnabled(true);
-            SharedPreferences preferences = this.getSharedPreferences("id", Context.MODE_PRIVATE);
-            String idEsta = preferences.getString("Estado","");
-            String idUni = mAuth.getCurrentUser().getUid();
-            ObtenerDatos(idUni,idEsta);
-            Guardar.setText("Actualizar");
-            Titulo.setText("Ok vamos Actualizar los Datos de su Institución");
+            Guardar.setOnClickListener(View.OnClickListener {
+                val Nom = Nombre.text.toString().trim()
+                val Ubi = txtUbicacion.text.toString().trim()
+                val Loca = Localidad.text.toString().trim()
+                val Tel = Telefono.text.toString().trim()
+                val Corr = Correo.text.toString().trim()
+                val Face = Facebook.text.toString().trim()
+                val Pag = Pagina.text.toString().trim()
 
-            Guardar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String Nom = Nombre.getText().toString().trim();
-                    String Ubi = txtUbicacion.getText().toString().trim();
-                    String Loca = Localidad.getText().toString().trim();
-                    String Tel = Telefono.getText().toString().trim();
-                    String Corr = Correo.getText().toString();
-                    String Face = Facebook.getText().toString();
-                    String Pag = Pagina.getText().toString();
-
-                    if (Nom.isEmpty() && Ubi.isEmpty() && Loca.isEmpty()) {
-                        Toast.makeText(getApplicationContext(), "Ingrese los Datos", Toast.LENGTH_SHORT).show();
-                    } else {
-                        updateLocal(Nom, Ubi, Loca, Tel, Corr, Face, Pag, idEsta, idUni);
+                if (Nom.isEmpty() || Ubi.isEmpty() || Loca.isEmpty()) {
+                    Toast.makeText(applicationContext, "Ingrese los Datos", Toast.LENGTH_SHORT).show()
+                } else {
+                    if (idUni != null) {
+                        updateLocal(Nom, Ubi, Loca, Tel, Corr, Face, Pag, idEsta, idUni)
+                    }else{
+                        Toast.makeText(applicationContext, "Error al Obtener idUser", Toast.LENGTH_SHORT).show()
                     }
                 }
-            });
+            })
 
-            IMGUbicac.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(RegistroUni.this, Ubicacion.class);
-                    intent.putExtra("Actualizar","Si");
-                    startActivity(intent);
-                    finish();
-                }
-            });
-        }else {
+            IMGUbicac.setOnClickListener(View.OnClickListener {
+                val intent = Intent(this@RegistroUni, Ubicacion::class.java)
+                intent.putExtra("Actualizar", "Si")
+                startActivity(intent)
+                finish()
+            })
+        } else {
+            val OpcionesTipo = arrayOf("Pública", "Privada")
+            val adapter1 = ArrayAdapter(this, R.layout.spinner_item_estilo, OpcionesTipo)
+            Tipo.setAdapter(adapter1)
 
-            String[] OpcionesTipo = {"Pública", "Privada"};
-            ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, R.layout.spinner_item_estilo, OpcionesTipo);
-            Tipo.setAdapter(adapter1);
+            val OpcionesEstado = arrayOf("Seleccione su Estado", "Aguascalientes", "Baja-California", "Baja-California-Sur",
+                "Campeche", "CDMX", "Chiapas", "Chihuahua", "Coahuila", "Colima", "Durango", "EstadoMx", "Guanajuato",
+                "Guerrero", "Hidalgo", "Jalisco", "Michoacan", "Morelos", "Nayarit", "Nuevo-Leon", "Oaxaca",
+                "Puebla", "Queretaro", "Quintana-Roo", "San-Luis-Potosi", "Sinaloa", "Sonora", "Tabasco",
+                "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatan", "Zacatecas"
+            )
+            val adapter2 = ArrayAdapter(this, R.layout.spinner_item_estilo, OpcionesEstado)
+            Estado.setAdapter(adapter2)
 
-            String[] OpcionesEstado = {"Seleccione su Estado", "Aguascalientes", "Baja-California", "Baja-California-Sur", "Campeche", "CDMX", "Chiapas", "Chihuahua", "Coahuila", "Colima", "Durango",
-                    "EstadoMx", "Guanajuato", "Guerrero", "Hidalgo", "Jalisco", "Michoacan", "Morelos", "Nayarit", "Nuevo-Leon", "Oaxaca", "Puebla", "Queretaro", "Quintana-Roo", "San-Luis-Potosi", "Sinaloa", "Sonora",
-                    "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatan", "Zacatecas"};
-            ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, R.layout.spinner_item_estilo, OpcionesEstado);
-            Estado.setAdapter(adapter2);
+            ObtenerMunicipio()
+            ObtenrCodigo()
 
-            ObtenerMunicipio();
-            ObtenrCodigo();
-
-            Municipio.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    String Item = parent.getSelectedItem().toString();
-                    if (Item.equals("Otro Municipio")) {
-                        lblMunicipio.setHint("Escriba su Municipio");
+            Municipio.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                    val Item = parent.selectedItem.toString()
+                    if (Item == "Otro Municipio") {
+                        lblMunicipio.setHint("Escriba su Municipio")
                     } else {
-                        lblMunicipio.setHint("Localidad o Colonia");
+                        lblMunicipio.setHint("Localidad o Colonia")
                     }
                 }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
+                override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
-            });
+            })
 
-            Guardar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            Guardar.setOnClickListener(View.OnClickListener {
+                val emailUser = Email.text.toString().trim()
+                val passUser = Pass.text.toString().trim()
+                val Abc = ABC.text.toString().trim()
+                val Nom = Nombre.text.toString().trim()
+                val ub = txtUbicacion.text.toString().trim()
+                val CodigUser = txtCodigo.text.toString().trim()
 
-                    String emailUser = Email.getText().toString().trim();
-                    String passUser = Pass.getText().toString().trim();
-                    String Abc = ABC.getText().toString().trim();
-                    String Nom = Nombre.getText().toString().trim();
-                    String ub = txtUbicacion.getText().toString().trim();
-                    String CodigUser= txtCodigo.getText().toString().trim();
+                if (Abc.isEmpty() || Nom.isEmpty() || ub.isEmpty()) {
+                    Toast.makeText(this@RegistroUni, "Complete los datos", Toast.LENGTH_SHORT).show()
 
-                    if (Abc.isEmpty() || Nom.isEmpty() || ub.isEmpty() ) {
-                        Toast.makeText(RegistroUni.this, "Complete los datos", Toast.LENGTH_SHORT).show();
-                    } else if (passUser.length() < 6) {
-                        Pass.setError("Su contraseña debe tener minimo 6 digitos");
-                        Pass.requestFocus();
-                    } else if (TextUtils.isEmpty(emailUser)) {
-                        Email.setError("Ingrese su correo electronico");
-                        Email.requestFocus();
-                    } else if (Estado.getSelectedItem().equals("Seleccione su Estado")) {
-                        Toast.makeText(RegistroUni.this, "Seleccione su Estado!", Toast.LENGTH_SHORT).show();
-                    } else if (Municipio.getSelectedItem().equals("Seleccione su Municipio")) {
-                        Toast.makeText(RegistroUni.this, "Seleccione su Municipio!", Toast.LENGTH_SHORT).show();
+                } else if (passUser.length < 6) {
+                    Pass.setError("Su contraseña debe tener minimo 6 digitos")
+                    Pass.requestFocus()
+
+                } else if (TextUtils.isEmpty(emailUser)) {
+                    Email.setError("Ingrese su correo electronico")
+                    Email.requestFocus()
+
+                } else if (Estado.getSelectedItem() == "Seleccione su Estado") {
+                    Toast.makeText(this@RegistroUni, "Seleccione su Estado!", Toast.LENGTH_SHORT).show()
+
+                } else if (Municipio.getSelectedItem() == "Seleccione su Municipio") {
+                    Toast.makeText(this@RegistroUni, "Seleccione su Municipio!", Toast.LENGTH_SHORT).show()
+                } else {
+                    if (CodigUser == Codigo) {
+                        GuardarDatos()
                     } else {
-                        if (CodigUser.equals(Codigo)) {
-                            GuardarDatos();
-                        }else {
-                            toastIncorrecto("Código Incoreccto");
-                        }
+                        toastIncorrecto("Código Incoreccto")
                     }
-
                 }
-            });
+            })
 
-            Acepto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    Guardar.setEnabled(true);
-                }
-            });
+            Acepto.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+                Guardar.setEnabled(
+                    true
+                )
+            })
 
-            btnCodigo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String URL = "https://m.me/505661245972084";
-                    Uri Link = Uri.parse(URL);
-                    Intent intent = new Intent(Intent.ACTION_VIEW,Link);
-                    startActivity(intent);
-                }
-            });
-
+            btnCodigo.setOnClickListener(View.OnClickListener {
+                val URL = "https://m.me/505661245972084"
+                val Link = Uri.parse(URL)
+                val intent = Intent(Intent.ACTION_VIEW, Link)
+                startActivity(intent)
+            })
         }
     }
 
-    private void ObtenerMunicipio() {
+    private fun ObtenerMunicipio() {
         //String Estd = Estado.getSelectedItem().toString().trim();
-        SPMunicipios.SelecciMuni(Estado,Municipio,RegistroUni.this);
+        SPMunicipios.SelecciMuni(Estado, Municipio, this@RegistroUni)
     }
 
 
-    private void GuardarDatos() {
+    private fun GuardarDatos() {
+        progressDialog.setMessage("Guardando Datos...")
+        progressDialog.show()
+        progressDialog.setCancelable(false)
 
-        progressDialog.setMessage("Guardando Datos...");
-        progressDialog.show();
-        progressDialog.setCancelable(false);
+        val map: MutableMap<String, Any?> = HashMap()
+        val Abre = ABC.text.toString().trim()
+        val Nombr = Nombre.text.toString().trim()
+        val Ubicaci = txtUbicacion.text.toString().trim()
+        val Loca = Localidad.text.toString().trim()
+        val Telefo = Telefono.text.toString().trim()
+        val Coree = Correo.text.toString().trim()
+        val Gmail = Email.text.toString().trim()
+        val Face = Facebook.text.toString().trim()
+        val Pag = Pagina.text.toString().trim()
 
-        Map<String, Object> map = new HashMap<>();
-        String Abre = ABC.getText().toString().trim();
-        String Nombr = Nombre.getText().toString().trim();
-        String Ubicaci = txtUbicacion.getText().toString().trim();
-        String Loca = Localidad.getText().toString().trim();
-        String Telefo = Telefono.getText().toString().trim();
-        String Coree = Correo.getText().toString().trim();
-        String Gmail = Email.getText().toString().trim();
-        String Face = Facebook.getText().toString().trim();
-        String Pag = Pagina.getText().toString().trim();
+        val Password = Pass.text.toString().trim()
 
-        String Password = Pass.getText().toString().trim();
+        val TipoUni = Tipo.selectedItem.toString().trim()
+        val EstadoRegion = Estado.selectedItem.toString().trim()
+        val Asentamie = Municipio.selectedItem.toString().trim()
+        println("ver estado $EstadoRegion")
 
-        String TipoUni = Tipo.getSelectedItem().toString().trim();
-        String EstadoRegion = Estado.getSelectedItem().toString().trim();
-        String Asentamie = Municipio.getSelectedItem().toString().trim();
-        System.out.println("ver estado " + EstadoRegion);
+        val preferences = getSharedPreferences("id", MODE_PRIVATE)
+        val editor = preferences.edit()
+        editor.putString("Estado", EstadoRegion)
+        editor.commit()
 
-        SharedPreferences preferences = getSharedPreferences("id", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("Estado", EstadoRegion);
-        editor.commit();
+        mAuth.createUserWithEmailAndPassword(Gmail, Password).addOnSuccessListener(
+            OnSuccessListener<AuthResult?> {
+                val preferences = getSharedPreferences("Token", MODE_PRIVATE)
+                val tok = preferences.getString("idToken", "")
+                val id = mAuth.currentUser?.uid
+                map["IdUser"] = id
+                map["ABC"] = Abre
+                map["Nombre"] = Nombr
+                map["Tipo"] = TipoUni
+                map["Ubicacion"] = Ubicaci
+                map["Municipio"] = Asentamie
+                map["Localidad"] = Loca
+                map["Estado"] = EstadoRegion
+                map["Telefono"] = Telefo
+                map["Correo"] = Coree
+                map["Facebook"] = Face
+                map["Pagina"] = Pag
+                map["Token"] = tok
+                if (id != null) {
+                    mfirestore.collection(EstadoRegion).document(id).set(map).addOnSuccessListener(
+                        OnSuccessListener {
+                            Toast.makeText(applicationContext, "Universidad Creado", Toast.LENGTH_SHORT).show()
+                            ABC.setText("")
+                            Nombre.setText("")
+                            txtUbicacion.setText("")
+                            Telefono.setText("")
+                            Correo.setText("")
+                            Facebook.setText("")
+                            Localidad.setText("")
+                            Pagina.setText("")
+                            Pass.setText("")
+                            progressDialog.dismiss()
 
-        mAuth.createUserWithEmailAndPassword(Gmail, Password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                SharedPreferences preferences = getSharedPreferences("Token", Context.MODE_PRIVATE);
-                String tok = preferences.getString("idToken","");
-                String id = mAuth.getCurrentUser().getUid();
-                map.put("IdUser",id);
-                map.put("ABC", Abre);
-                map.put("Nombre", Nombr);
-                map.put("Tipo", TipoUni);
-                map.put("Ubicacion", Ubicaci);
-                map.put("Municipio", Asentamie);
-                map.put("Localidad", Loca);
-                map.put("Estado", EstadoRegion);
-                map.put("Telefono", Telefo);
-                map.put("Correo", Coree);
-                map.put("Facebook", Face);
-                map.put("Pagina", Pag);
-                map.put("Token",tok);
+                            val intent = Intent(this@RegistroUni, Ubicacion::class.java)
+                            intent.putExtra("Dato", "Uni")
+                            startActivity(intent)
+                            finish()
 
-                mfirestore.collection(EstadoRegion).document(id).set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(getApplicationContext(), "Universidad Creado", Toast.LENGTH_SHORT).show();
-                        ABC.setText("");
-                        Nombre.setText("");
-                        txtUbicacion.setText("");
-                        Telefono.setText("");
-                        Correo.setText("");
-                        Facebook.setText("");
-                        Localidad.setText("");
-                        Pagina.setText("");
-                        Pass.setText("");
-
-                        Intent intent = new Intent(RegistroUni.this, Ubicacion.class);
-                        intent.putExtra("Dato","Uni");
-                        startActivity(intent);
-                        finish();
-
-                        progressDialog.dismiss();
+                        }).addOnFailureListener {
+                        Toast.makeText(applicationContext, "Error al Crear La Universidad", Toast.LENGTH_SHORT).show()
+                        progressDialog.dismiss()
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), "Error al Crear La Universidad", Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                String msg="Error al registrar";
-                toastIncorrecto(msg);
-                progressDialog.dismiss();
-
-            }
-        });
-
+                }else{
+                    Toast.makeText(applicationContext, "Error No se pudo Obtener el Id del User", Toast.LENGTH_SHORT).show()
+                    progressDialog.dismiss()
+                }
+            }).addOnFailureListener {
+            val msg = "Error al registrar"
+            toastIncorrecto(msg)
+            progressDialog.dismiss()
+        }
     }
 
 
-    private void updateLocal(String NomLocal, String Localiza, String Localidad, String Tele, String Corre, String Face,String Pag, String idEstado ,String idUni) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("Nombre", NomLocal);
-        map.put("Ubicacion", Localiza);
-        map.put("Localidad", Localidad);
-        map.put("Telefono", Tele);
-        map.put("Correo", Corre);
-        map.put("Facebook", Face);
-        map.put("Pagina", Pag);
+    private fun updateLocal(NomLocal: String, Localiza: String, Localidad: String, Tele: String, Corre: String,
+        Face: String, Pag: String, idEstado: String, idUni: String) {
 
-        mfirestore.collection(idEstado).document(idUni).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                String msg="Actualización Exitosa";
-                toastCorrecto(msg);
-                startActivity(new Intent(RegistroUni.this, MenuPrincipal.class));
-                finish();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                String msg="Error al Actualizar";
-                toastIncorrecto(msg);
-            }
-        });
+        val map: MutableMap<String, Any> = HashMap()
+        map["Nombre"] = NomLocal
+        map["Ubicacion"] = Localiza
+        map["Localidad"] = Localidad
+        map["Telefono"] = Tele
+        map["Correo"] = Corre
+        map["Facebook"] = Face
+        map["Pagina"] = Pag
+
+        mfirestore.collection(idEstado).document(idUni).update(map).addOnSuccessListener(
+            OnSuccessListener {
+                val msg = "Actualización Exitosa"
+                toastCorrecto(msg)
+                startActivity(Intent(this@RegistroUni, MenuPrincipal::class.java))
+                finish()
+            }).addOnFailureListener {
+            val msg = "Error al Actualizar"
+            toastIncorrecto(msg)
+        }
     }
 
 
-    private void ObtenerDatos(String idUni,String idEstado) {
-        mfirestore.collection(idEstado).document(idUni).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                String NombreUni = documentSnapshot.getString("Nombre");
-                String UbicacionUni = documentSnapshot.getString("Ubicacion");
-                String Localid = documentSnapshot.getString("Localidad");
-                String TelefonoUni = documentSnapshot.getString("Telefono");
-                String CorreoUni = documentSnapshot.getString("Correo");
-                String FaceboockUni= documentSnapshot.getString("Facebook");
-                String PaginaUni = documentSnapshot.getString("Pagina");
-                String Latit = documentSnapshot.getString("Latitud");
-                String Longt = documentSnapshot.getString("Longitud");
-                Double Lat = Double.valueOf(Latit);
-                Double Lon = Double.valueOf(Longt);
+    private fun ObtenerDatos(idUni: String, idEstado: String) {
+        mfirestore.collection(idEstado).document(idUni).get().addOnSuccessListener(
+            OnSuccessListener { documentSnapshot ->
+                val NombreUni = documentSnapshot.getString("Nombre")
+                val UbicacionUni = documentSnapshot.getString("Ubicacion")
+                val Localid = documentSnapshot.getString("Localidad")
+                val TelefonoUni = documentSnapshot.getString("Telefono")
+                val CorreoUni = documentSnapshot.getString("Correo")
+                val FaceboockUni = documentSnapshot.getString("Facebook")
+                val PaginaUni = documentSnapshot.getString("Pagina")
 
-                Nombre.setText(NombreUni);
-               // ABC.setText(ABc);
-                lblABC.setVisibility(View.GONE);
-                Tipo.setVisibility(View.GONE);
-                Estado.setVisibility(View.GONE);
-                Municipio.setVisibility(View.GONE);
-                Localidad.setText(Localid);
-                txtUbicacion.setText(UbicacionUni);
-                Telefono.setText(TelefonoUni);
-                Correo.setText(CorreoUni);
-                Facebook.setText(FaceboockUni);
-                Pagina.setText(PaginaUni);
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(RegistroUni.this, "Error al Obtener los Datos", Toast.LENGTH_SHORT).show();
-            }
-        });
+                Nombre.setText(NombreUni)
+                lblABC.visibility = View.GONE
+                Tipo.visibility = View.GONE
+                Estado.visibility = View.GONE
+                Municipio.visibility = View.GONE
+                Localidad.setText(Localid)
+                txtUbicacion.setText(UbicacionUni)
+                Telefono.setText(TelefonoUni)
+                Correo.setText(CorreoUni)
+                Facebook.setText(FaceboockUni)
+                Pagina.setText(PaginaUni)
+            }).addOnFailureListener {
+            Toast.makeText(this@RegistroUni, "Error al Obtener los Datos", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    public void ObtenrCodigo() {
-        mfirestore.collection("Novedades").document("Universidades").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Codigo = documentSnapshot.getString("Codigo");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(RegistroUni.this, "Error al Obtener el Código", Toast.LENGTH_SHORT).show();
-            }
-        });
+    fun ObtenrCodigo() {
+        mfirestore.collection("Novedades").document("Universidades").get().addOnSuccessListener(
+            OnSuccessListener { documentSnapshot ->
+                Codigo = documentSnapshot.getString("Codigo")
+            }).addOnFailureListener {
+            Toast.makeText(this@RegistroUni, "Error al Obtener el Código", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    override fun onStart() {
+        super.onStart()
     }
 
-    public void toastCorrecto(String msg) {
-        LayoutInflater layoutInflater = getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.custom_toast_ok, (ViewGroup) findViewById(R.id.ll_custom_toast_ok));
-        TextView txtMensaje = view.findViewById(R.id.txtMensajeToast1);
-        txtMensaje.setText(msg);
+    fun toastCorrecto(msg: String?) {
+        val view = layoutInflater.inflate(R.layout.custom_toast_ok, null)
+        val txtMensaje = view.findViewById<TextView>(R.id.txtMensajeToast1)
+        txtMensaje.text = msg
 
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.BOTTOM, 0, 200);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(view);
-        toast.show();
+        val toast = Toast(applicationContext)
+        toast.setGravity(Gravity.CENTER_VERTICAL or Gravity.BOTTOM, 0, 200)
+        toast.duration = Toast.LENGTH_LONG
+        toast.view = view
+        toast.show()
     }
 
-    public void toastIncorrecto(String msg) {
-        LayoutInflater layoutInflater = getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.custom_toast_error, (ViewGroup) findViewById(R.id.ll_custom_toast_error));
-        TextView txtMensaje = view.findViewById(R.id.txtMensajeToast2);
-        txtMensaje.setText(msg);
+    fun toastIncorrecto(msg: String?) {
+        val view = layoutInflater.inflate(R.layout.custom_toast_error, null)
+        val txtMensaje = view.findViewById<TextView>(R.id.txtMensajeToast2)
+        txtMensaje.text = msg
 
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.BOTTOM, 0, 300);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(view);
-        toast.show();
+        val toast = Toast(applicationContext)
+        toast.setGravity(Gravity.CENTER_VERTICAL or Gravity.BOTTOM, 0, 300)
+        toast.duration = Toast.LENGTH_LONG
+        toast.view = view
+        toast.show()
+    }
+
+    companion object {
+        var Codigo: String? = null
     }
 }

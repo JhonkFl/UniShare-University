@@ -71,8 +71,8 @@ public class AdapterCarrerasUni extends FirestoreRecyclerAdapter<Carreras, Adapt
 
     private void EliminarCarr(String id) {
         String idUser = mAuth.getCurrentUser().getUid();
-        String Estado = CarrerasUni.getEstad();
-
+        //String Estado = CarrerasUni.estad
+String Estado ="Puebla";
         progressDialog.setMessage("Eliminando Carrera...");
         progressDialog.show();
         progressDialog.setCancelable(false);

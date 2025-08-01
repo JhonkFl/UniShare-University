@@ -1,115 +1,86 @@
-package com.softjk.unishare.Adapter;
+package com.softjk.unishare.Adapter
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.app.Activity
+import android.app.ProgressDialog
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.OnLongClickListener
+import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.recyclerview.widget.RecyclerView
+import cn.pedant.SweetAlert.SweetAlertDialog
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.softjk.unishare.CarrerasUni
+import com.softjk.unishare.Modelo.Carreras
+import com.softjk.unishare.R
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.recyclerview.widget.RecyclerView;
+class AdapterMaestriaUni(options: FirestoreRecyclerOptions<Carreras?>, var activity: Activity) :
+    FirestoreRecyclerAdapter<Carreras, AdapterMaestriaUni.ViewHolder>(options) {
+    private val mAuth = FirebaseAuth.getInstance()
+    private val mFirestore = FirebaseFirestore.getInstance()
+    var progressDialog: ProgressDialog = ProgressDialog(activity)
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.softjk.unishare.CarrerasUni;
-import com.softjk.unishare.Modelo.Carreras;
-import com.softjk.unishare.R;
+    override fun onBindViewHolder(viewHolder: ViewHolder, i: Int, carreras: Carreras) {
+        viewHolder.Nombre.text = carreras.Nombre
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
-
-public class AdapterMaestriaUni extends FirestoreRecyclerAdapter<Carreras, AdapterMaestriaUni.ViewHolder> {
-    Activity activity;
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
-    ProgressDialog progressDialog;
-    public AdapterMaestriaUni(@NonNull FirestoreRecyclerOptions<Carreras> options, Activity activity) {
-        super(options);
-        this.activity = activity;
-        mAuth = FirebaseAuth.getInstance();
-        progressDialog = new ProgressDialog(activity);
+        viewHolder.LinerCarrera.setOnLongClickListener(OnLongClickListener {
+            val documentSnapshot = snapshots.getSnapshot(viewHolder.adapterPosition)
+            val id = documentSnapshot.id
+            val Nomb = carreras.Nombre
+            VentanaMsgDialog(Nomb, id)
+            true
+        })
     }
 
-    @Override
-    protected void onBindViewHolder(@NonNull AdapterMaestriaUni.ViewHolder viewHolder, int i, @NonNull Carreras carreras) {
-        viewHolder.Nombre.setText(carreras.getNombre());
+    private fun VentanaMsgDialog(Nombre: String, id: String) {
+        SweetAlertDialog(activity, SweetAlertDialog.NORMAL_TYPE).setTitleText("Aviso")
+            .setContentText("Eliminar Carrera: $Nombre")
+            .setCancelText("No").setConfirmText("Si")
+            .showCancelButton(true).setCancelClickListener { sDialog: SweetAlertDialog ->
+                sDialog.dismissWithAnimation()
+            }.setConfirmClickListener { sweetAlertDialog: SweetAlertDialog ->
+                sweetAlertDialog.dismissWithAnimation()
+                println("Ver id: $id")
+                EliminarCarr(id)
+            }.show()
+    }
 
-        viewHolder.LinerCarrera.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(viewHolder.getAdapterPosition());
-                String id = documentSnapshot.getId();
-                String Nomb = carreras.getNombre();
-                VentanaMsgDialog(Nomb,id);
-                return true;
+    private fun EliminarCarr(id: String) {
+        val idUser = mAuth.currentUser!!.uid
+        val Estado = CarrerasUni.estad
+
+        progressDialog.setMessage("Eliminando Carrera...")
+        progressDialog.show()
+        progressDialog.setCancelable(false)
+
+        println("ver Adapter daatos recibidos Ruta= $Estado/$idUser/Maestrias + Documento= $id")
+        mFirestore.collection("$Estado/$idUser/Maestrias").document(id).delete()
+            .addOnSuccessListener(
+                OnSuccessListener {
+                    Toast.makeText(activity, "Eliminado", Toast.LENGTH_SHORT).show()
+                    progressDialog.dismiss()
+                }).addOnFailureListener {
+                Toast.makeText(activity, "Error al eliminar", Toast.LENGTH_SHORT).show()
+                progressDialog.dismiss()
             }
-        });
-
-    }
-
-    private void VentanaMsgDialog( String Nombre, String id) {
-
-        new SweetAlertDialog(activity, SweetAlertDialog.NORMAL_TYPE).setTitleText("Aviso")
-                .setContentText("Eliminar Carrera: "+Nombre)
-                .setCancelText("No").setConfirmText("Si")
-                .showCancelButton(true).setCancelClickListener(sDialog -> {
-                    sDialog.dismissWithAnimation();
-
-                }).setConfirmClickListener(sweetAlertDialog -> {
-                    sweetAlertDialog.dismissWithAnimation();
-                    System.out.println("Ver id: " + id);
-                    EliminarCarr(id);
-                }).show();
-
-    }
-
-    private void EliminarCarr(String id) {
-        String idUser = mAuth.getCurrentUser().getUid();
-        String Estado = CarrerasUni.getEstad();
-
-        progressDialog.setMessage("Eliminando Carrera...");
-        progressDialog.show();
-        progressDialog.setCancelable(false);
-
-        System.out.println("ver Adapter daatos recibidos Ruta= "+Estado+"/"+idUser+"/Maestrias + Documento= "+id);
-        mFirestore.collection(Estado+"/"+idUser+"/Maestrias").document(id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(activity, "Eliminado", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(activity, "Error al eliminar", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-            }
-        });
     }
 
 
-    @NonNull
-    @Override
-    public AdapterMaestriaUni.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_carreras,parent,false);
-        return new ViewHolder(view);
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_carreras, parent, false)
+        return ViewHolder(view)
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView Nombre;
-        LinearLayoutCompat LinerCarrera;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            Nombre = itemView.findViewById(R.id.NombreCarreraItem);
-            LinerCarrera = itemView.findViewById(R.id.LinerCarreras);
-        }
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var Nombre: TextView = itemView.findViewById(R.id.NombreCarreraItem)
+        var LinerCarrera: LinearLayoutCompat =
+            itemView.findViewById(R.id.LinerCarreras)
     }
 }

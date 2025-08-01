@@ -54,7 +54,7 @@ public class FragmentNewCarreras extends DialogFragment {
         Categoria = view.findViewById(R.id.SpCategoria);
         mfFirestore = FirebaseFirestore.getInstance();
 
-        String [] OpcionesCate = {"Seleccione una Categioria","Arte","Ciencias","Comunicación","Derecho","Educación","Finanzas",
+        String [] OpcionesCate = {"Seleccione una Categoria","Arte","Ciencias","Comunicación","Derecho","Educación","Finanzas",
                 "Humanidades","Ingeniería","Medicina","Militar","Servicios","Tecnología","Otro"};
         ArrayAdapter<String> adapter2 = new ArrayAdapter<>(getActivity(),R.layout.spinner_item_estilo,OpcionesCate);
         Categoria.setAdapter(adapter2);

@@ -48,7 +48,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".Turorial"
+            android:name=".Tutorial"
             android:exported="false" />
         <activity
             android:name=".RecuperarPass"
